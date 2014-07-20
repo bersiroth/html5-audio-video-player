@@ -19,7 +19,7 @@
         </div>
         <div class="row">
             <div class="large-8 medium-8 columns">
-                <audio id="musique1" src="http://www.hulkshare.com/dl/doq8dxd96rvj/06_-_the_final_hour_%281h%29.mp3" preload="none"></audio>
+                <audio id="musique1" src="http://www.hulkshare.com/dl/d9al90dl2hv6/hulkshare.mp3?d=1" preload="none"></audio>
                 <div style="float: left;padding-right: 15px">
                     <span id="titre">Titre </span> / <span id="time">-- : --</span>
                 </div>
@@ -39,23 +39,21 @@
                 <br>
                 <div id="progressB" style="clear: both;background-color: red;height: 20px; width: 1px"></div>
                 <ul>
-                    <li><a id="chargementLP">chargement LPC</a></li>
+                    <li><a id="chargementLP">chargement LPCaze</a></li>
                     <li><a id="chargementCL">chargement CLASSIC</a></li>
                 </ul>
             </div>
         </div>
         <?php
-        /*$contents = file_get_contents('1.mp3');
-        $base64 = base64_encode( $contents );
-        $audio = 'data:audio/mp3;base64,' . $base64;
-        $contents = file_get_contents('2.mp3');
-        $base64 = base64_encode( $contents );
-        $audio2 = 'data:audio/mp3;base64,' . $base64;*/
-
+        // $contents = file_get_contents('1.mp3');
+        // $base64 = base64_encode( $contents );
+        // $audio = 'data:audio/mp3;base64,' . $base64;
+        // $contents = file_get_contents('2.mp3');
+        // $base64 = base64_encode( $contents );
+        // $audio2 = 'data:audio/mp3;base64,' . $base64;
         ?>
         <script type="text/javascript">
 
-            //@TODO mettre le code dans un repo en ligne (github)
             //@TODO choisir le moment de la chanson en cliquant sur la barre de progression
             //@TODO durée de la chanson dans la base
             //@TODO boutton effacer les data hors ligne
@@ -69,68 +67,68 @@
             /*var audio = "<?php //echo $audio ?>";
             var audio2 = "<?php //echo $audio2 ?>";*/
 
-/*
-            window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
-            if (!window.indexedDB) {
-                window.alert("Your browser doesn't support a stable version of IndexedDB. Such and such feature will not be available.");
-            }
-            var request = window.indexedDB.deleteDatabase("MyTestDatabase");*/
 
-/*
-            const customerData = [
-                { ssn: "1", name: "LP", data: audio },
-                { ssn: "2", name: "CLASSIC", data: audio2 }
-            ];
+            // window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+            // if (!window.indexedDB) {
+            //     window.alert("Your browser doesn't support a stable version of IndexedDB. Such and such feature will not be available.");
+            // }
+            // var request = window.indexedDB.deleteDatabase("MyTestDatabase");
 
-            window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
-            if (!window.indexedDB) {
-                window.alert("Your browser doesn't support a stable version of IndexedDB. Such and such feature will not be available.");
-            }
 
-            var request = window.indexedDB.open("MyTestDatabase",1);
+            // const customerData = [
+            //     { ssn: "1", name: "LP", data: audio },
+            //     { ssn: "2", name: "CLASSIC", data: audio2 }
+            // ];
 
-            request.onerror = function(event) {
-                alert('erreur ouvert base');
-            };
+            // window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+            // if (!window.indexedDB) {
+            //     window.alert("Your browser doesn't support a stable version of IndexedDB. Such and such feature will not be available.");
+            // }
 
-            request.onsuccess = function (evt) {
-                db = this.result;
-                chargment = true;
-                console.debug('ok chargement ');
-            };
+            // var request = window.indexedDB.open("MyTestDatabase",1);
 
-            request.onupgradeneeded = function(event) {
-                var db = event.target.result;
-                var objectStore = db.createObjectStore("musique", { keyPath: "ssn" });
-                objectStore.createIndex("name", "name", { unique: true });
-                objectStore.createIndex("data", "data", { unique: true });
-                objectStore.transaction.oncomplete = function(event) {
-                    var customerObjectStore = db.transaction("musique", "readwrite").objectStore("musique");
-                    for (var i in customerData) {
-                        customerObjectStore.add(customerData[i]);
-                    }
-                }
-            };
+            // request.onerror = function(event) {
+            //     alert('erreur ouvert base');
+            // };
 
-            $("#chargementLP").click(function(){getMusique('1')});
-            $("#chargementCL").click(function(){getMusique('2')});
+            // request.onsuccess = function (evt) {
+            //     db = this.result;
+            //     chargment = true;
+            //     console.debug('ok chargement ');
+            // };
 
-            function getMusique($id){
-                console.debug();
-                if (!chargment) return;
-                var transaction = db.transaction("musique");
-                var objectStore = transaction.objectStore("musique");
-                var request = objectStore.get($id);
-                request.onerror = function(event) {
-                    alert('no ok');
-                };
-                request.onsuccess = function(event) {
-                    musique.pause();
-                    document.querySelector('#titre').innerHTML = request.result.name;
-                    musique.setAttribute('src',request.result.data);
-                    document.querySelector('#play').innerHTML = 'Play';
-                };
-            }*/
+            // request.onupgradeneeded = function(event) {
+            //     var db = event.target.result;
+            //     var objectStore = db.createObjectStore("musique", { keyPath: "ssn" });
+            //     objectStore.createIndex("name", "name", { unique: true });
+            //     objectStore.createIndex("data", "data", { unique: true });
+            //     objectStore.transaction.oncomplete = function(event) {
+            //         var customerObjectStore = db.transaction("musique", "readwrite").objectStore("musique");
+            //         for (var i in customerData) {
+            //             customerObjectStore.add(customerData[i]);
+            //         }
+            //     }
+            // };
+
+            // $("#chargementLP").click(function(){getMusique('1')});
+            // $("#chargementCL").click(function(){getMusique('2')});
+
+            // function getMusique($id){
+            //     console.debug();
+            //     if (!chargment) return;
+            //     var transaction = db.transaction("musique");
+            //     var objectStore = transaction.objectStore("musique");
+            //     var request = objectStore.get($id);
+            //     request.onerror = function(event) {
+            //         alert('no ok');
+            //     };
+            //     request.onsuccess = function(event) {
+            //         musique.pause();
+            //         document.querySelector('#titre').innerHTML = request.result.name;
+            //         musique.setAttribute('src',request.result.data);
+            //         document.querySelector('#play').innerHTML = 'Play';
+            //     };
+            // }
 
             $('#musique1').on('timeupdate',function(){
                 document.querySelector('#time').innerHTML = formatTime(musique.currentTime) + ' : ' + formatTime(musique.duration) ;
@@ -148,16 +146,32 @@
                 }
             });
 
+            $('#progress').click(function(){
+                selectCurrentTime(event)
+            });
+            $('#progressData').click(function(){
+                selectCurrentTime(event)
+            });
+
+            function selectCurrentTime(event){
+                var leftProgressData = $('#progressData').position().left;
+                var tailleTotale = document.querySelector('#progressTotal').offsetWidth;
+                var leftMouse = event.clientX;
+                console.debug(leftProgressData);
+                console.debug(leftMouse);
+
+                var purcent = ((leftMouse - leftProgressData) / tailleTotale) * 100;
+                console.debug(purcent);
+                console.debug(musique.duration);
+                var time = (musique.duration * purcent)/100;
+                console.debug(time);
+                musique.currentTime = time;
+            }
+
             $('#musique1').bind('progress',function(){
-                console.debug('test1');
-                console.debug(musique.buffered.length);
-                console.debug('test2');
                 var duration = musique.duration;
                 if (musique.buffered.length > 0) {
                     var end = musique.buffered.end(0);
-                    console.debug(end);
-                    console.debug(duration);
-                    console.debug((end/duration)*100);
                     var progressValue = (end/duration)*100;
                     var tailleTotale = document.querySelector('#progressTotal').offsetWidth;
                     var avancement = round2((progressValue / 100) * tailleTotale) + 'px';

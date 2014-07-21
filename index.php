@@ -38,10 +38,7 @@
                 <div id="volume" style="width: 100px; float: left;margin: 17px 0 0 10px"></div>
                 <br>
                 <ul id="playlist" style="clear:both">
-
                 </ul>
-                <br>
-                <br>
                 <ul>
                     <li><a id="chargementLP">chargement LP</a></li>
                     <li><a id="chargementCL">chargement CLASSIC</a></li>
@@ -80,6 +77,11 @@
 
             /* --- MUSIQUE DATA --- */
 
+            var dataDE = new Object();
+            dataDE.src = "";
+            dataDE.duration = 0;
+            dataDE.title = "Titre";
+
             var dataCL = new Object();
             dataCL.src = "2.mp3";
             dataCL.duration = 171;
@@ -91,7 +93,7 @@
             dataLP.title = "Linkin Park";
 
             /*var audio = "<?php //echo $audio ?>";
-            var audio2 = "<?php //echo $audio2 ?>"; */
+            var audio2 = "<?php //echo $audio2 ?>";*/
 
             /* --- FIN MUSIQUE DATA --- */
 
@@ -131,7 +133,11 @@
             musique.addEventListener('ended',function(){
                 playlist = playlist.slice(1);
                 chargementPlaylist();
-                setSrc(playlist[0]);
+                if (playlist.length > 0){
+                    setSrc(playlist[0]);
+                } else {
+                    setSrc(dataDE);
+                }
                 playPause();
             });
 

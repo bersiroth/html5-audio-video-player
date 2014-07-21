@@ -37,7 +37,11 @@
                 </div>
                 <div id="volume" style="width: 100px; float: left;margin: 17px 0 0 10px"></div>
                 <br>
-                <div id="progressB" style="clear: both;background-color: red;height: 20px; width: 1px"></div>
+                <ul id="playlist" style="clear:both">
+
+                </ul>
+                <br>
+                <br>
                 <ul>
                     <li><a id="chargementLP">chargement LP</a></li>
                     <li><a id="chargementCL">chargement CLASSIC</a></li>
@@ -55,6 +59,7 @@
         <script type="text/javascript">
 
             //@TODO faire un systeme de playlist
+            //@TODO injecter du HTML dans un div id bersi
             //@TODO durée de la chanson dans la base
             //@TODO boutton effacer les data hors ligne
             //@TODO boutton charger une data hors ligne
@@ -67,6 +72,7 @@
             var musique = new Audio();
             var chargment = false;
             var duration;
+            var playlist = new Array();;
 
             /* --- DATA --- */
 
@@ -88,25 +94,6 @@
             var audio2 = "<?php //echo $audio2 ?>";*/
 
             /* --- FIN MUSIQUE DATA --- */
-
-
-
-            /* --- CHANGEMENT MUSIQUE --- */
-
-            $("#chargementLP").click(function(){setSrc(dataLP)});
-            $("#chargementCL").click(function(){setSrc(dataCL)});
-
-            function setSrc(data) {
-                musique.src = data.src;
-                duration = data.duration;
-                document.querySelector('#progressData').style.width = '0px' ;
-                document.querySelector('#progress').style.width = '0px' ;
-                document.querySelector('#play').innerHTML = 'Play';
-                document.querySelector('#time').innerHTML = '0:00 : ' + formatTime(duration);
-                document.querySelector('#titre').innerHTML = data.title;
-            }
-
-            /* --- FIN CHANGEMENT MUSIQUE --- */
 
 
 
@@ -141,6 +128,13 @@
                 }
             });
 
+            musique.addEventListener('ended',function(){
+                playlist = playlist.slice(1);
+                chargementPlaylist();
+                setSrc(playlist[0]);
+                playPause();
+            });
+
             /* --- FIN AUDIO EVENT --- */
 
 
@@ -148,7 +142,13 @@
             /* --- AUDIO CONTROLER --- */
 
             function playPause(){
-                if (musique.getAttribute('src') == null) return;
+                if (musique.getAttribute('src') == null) {
+                    if (playlist[0] != undefined) {
+                        setSrc(playlist[0]);
+                    } else {
+                        return
+                    }
+                }
                 var bouton  = document.querySelector('#play');
                 if (musique.paused){
                     musique.play();
@@ -164,14 +164,13 @@
                 musique.currentTime = 0;
                 musique.pause();
                 document.querySelector('#play').innerHTML = 'Play';
-                document.querySelector('#progressB').style.width = '1px' ;
+                document.querySelector('#progress').style.width = '1px' ;
             }
 
             function setVolume(value){
                 $("#volume").slider("option", "value", value*100);
                 musique.volume = value;
                 document.querySelector('#volumeValue').innerHTML = Math.round(value*100);
-
             }
 
             function selectCurrentTime(event){
@@ -182,6 +181,32 @@
                 var time = (musique.duration * purcent)/100;
                 musique.currentTime = time;
             }
+
+            function setSrc(data) {
+                musique.src = data.src;
+                duration = data.duration;
+                document.querySelector('#progressData').style.width = '0px' ;
+                document.querySelector('#progress').style.width = '0px' ;
+                document.querySelector('#play').innerHTML = 'Play';
+                document.querySelector('#time').innerHTML = '0:00 : ' + formatTime(duration);
+                document.querySelector('#titre').innerHTML = data.title;
+            }
+
+            function addPlaylist(data){
+                playlist.push(data);
+                chargementPlaylist();
+            }
+
+            function chargementPlaylist(){
+                var htmlPlaylist = "";
+                for (var i = 0; i < playlist.length; i++) {
+                    htmlPlaylist = htmlPlaylist + "<li>" + playlist[i].title + "</li>";
+                };
+                document.querySelector('#playlist').innerHTML = htmlPlaylist;
+            }
+
+            $("#chargementLP").click(function(){addPlaylist(dataLP)});
+            $("#chargementCL").click(function(){addPlaylist(dataCL)});
 
             $('#progress').click(function(){
                 selectCurrentTime(event)
@@ -317,7 +342,7 @@
             //     };
             //     request.onsuccess = function(event) {
             //         var data = request.result;
-            //         data.data = "<?php echo $audio ?>";
+            //         data.data = "<?php //echo $audio ?>";
             //         var requestUpdate = objectStore.put(data);
             //         requestUpdate.onerror = function(event) {
             //             alert('no ok');

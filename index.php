@@ -56,7 +56,7 @@
             /* --- MUSIQUE DATA --- */
 
             var dataDE = new Object();
-            dataDE.src = "";
+            dataDE.src = 'default';
             dataDE.duration = 0;
             dataDE.title = "Titre";
 
@@ -151,14 +151,12 @@
             });
 
             musique.addEventListener('ended',function(){
-                playlist.shift();
-                chargementPlaylist();
-                if (playlist.length > 0){
-                    setSrc(playlist[0],0);
+                if (currentMusique < playlist.length - 1){
+                    nextMusique();
                 } else {
-                    setSrc(dataDE,0);
+                    setSrc(dataDE,-1);
+                    chargementPlaylist();
                 }
-                playPause();
             });
 
             /* --- FIN AUDIO EVENT --- */
@@ -168,7 +166,7 @@
             /* --- AUDIO CONTROLER --- */
 
             function playPause(){
-                if (musique.getAttribute('src') == null) {
+                if (musique.getAttribute('src') == null || musique.getAttribute('src') == 'default') {
                     if (playlist[0] != undefined) {
                         setSrc(playlist[0],0);
                     } else {
@@ -183,6 +181,7 @@
                     musique.pause();
                     bouton.innerHTML = 'Play';
                 }
+                chargementPlaylist();
             }
 
             function stop(){
@@ -209,6 +208,7 @@
             }
 
             function setSrc(data, id) {
+                console.debug(data);
                 currentMusique = id;
                 musique.src = data.src;
                 duration = data.duration;
@@ -220,15 +220,16 @@
             }
 
             function addPlaylist(data){
-                data.id = Math.random();
                 playlist.push(data);
                 chargementPlaylist();
             }
 
             function chargementPlaylist(){
                 var htmlPlaylist = "";
+                var style = "";
                 for (var i = 0; i < playlist.length; i++) {
-                    htmlPlaylist = htmlPlaylist + "<li id='" + i + "'>" + playlist[i].title + " <span id='" + i + "'>X</span></li>";
+                    style = (currentMusique == i) ? "style='color:blue'" : "" ;
+                    htmlPlaylist = htmlPlaylist + "<li id='" + i + "' " + style + "><span>" + playlist[i].title + "</span> <span>X</span></li>";
                 };
                 document.querySelector('#playlist').innerHTML = htmlPlaylist;
             }
@@ -237,43 +238,34 @@
             $("#chargementCL").click(function(){addPlaylist(dataCL)});
 
             $("#next").click(function(){
-                // console.log('===============');
-                // console.log('next');
-                // console.log('current avant : ' + currentMusique);
-                // console.log('longeur playlist : ' + playlist.length);
-                // console.log('id derniere chanson : ' + (playlist.length - 1));
+                nextMusique();
+            });
+
+            function nextMusique(){
                 if (currentMusique < playlist.length - 1) {
                     setSrc(playlist[currentMusique + 1],  currentMusique + 1);
                     playPause();
                 }
-                // console.log('current apres : ' + currentMusique);
-                // console.log('===============');
-            });
+            }
 
             $("#previous").click(function(){
-                // console.log('===============');
-                // console.log('previous');
-                // console.log('current avant : ' + currentMusique);
-                // console.log('longeur playlist : ' + playlist.length);
-                // console.log('id derniere chanson : ' + (playlist.length - 1));
                 if (currentMusique > 0) {
                     setSrc(playlist[currentMusique - 1], currentMusique - 1);
                     playPause();
                 }
-                // console.log('current apres : ' + currentMusique);
-                // console.log('===============');
             });
 
-            $("#playlist").on('click', 'span', function(){
-                var key = this.getAttribute('id');
-                playlist.splice(key, 1);
-                currentMusique = currentMusique - 1;
-                chargementPlaylist();
+            $("#playlist").on('click', 'li span:last-child', function(){
+                var key = this.parentNode.getAttribute('id');
+                if(key != currentMusique){
+                    playlist.splice(key, 1);
+                    currentMusique = currentMusique - 1;
+                    chargementPlaylist();
+                }
             });
 
-            $("#playlist").on('click', 'li', function(){
-                var key = this.getAttribute('id');
-                console.debug(key);
+            $("#playlist").on('click', 'li span:first-child', function(){
+                var key = this.parentNode.getAttribute('id');
                 setSrc(playlist[key], key);
                 playPause();
             });

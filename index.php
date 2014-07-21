@@ -19,7 +19,7 @@
         </div>
         <div class="row">
             <div class="large-8 medium-8 columns">
-                <audio id="musique1" src="http://www.hulkshare.com/dl/d9al90dl2hv6/hulkshare.mp3?d=1" preload="none"></audio>
+                <audio id="musique1" src="http://www.hulkshare.com/dl/sk5mrksy19ib/hulkshare.mp3?d=1" preload="none"></audio>
                 <div style="float: left;padding-right: 15px">
                     <span id="titre">Titre </span> / <span id="time">-- : --</span>
                 </div>
@@ -39,7 +39,7 @@
                 <br>
                 <div id="progressB" style="clear: both;background-color: red;height: 20px; width: 1px"></div>
                 <ul>
-                    <li><a id="chargementLP">chargement LPCaze</a></li>
+                    <li><a id="chargementLP">chargement LP</a></li>
                     <li><a id="chargementCL">chargement CLASSIC</a></li>
                 </ul>
             </div>
@@ -54,11 +54,11 @@
         ?>
         <script type="text/javascript">
 
-            //@TODO choisir le moment de la chanson en cliquant sur la barre de progression
+            //@TODO faire une selecteur de chanson
+            //@TODO faire un systeme de playlist
             //@TODO durée de la chanson dans la base
             //@TODO boutton effacer les data hors ligne
             //@TODO boutton charger une data hors ligne
-            //@TODO faire un systeme de playlist
 
         $( document ).ready(function() {
             var db;
@@ -153,18 +153,22 @@
                 selectCurrentTime(event)
             });
 
+            function getPosition(element){
+                var top = 0, left = 0;
+                while (element) {
+                    left   += element.offsetLeft;
+                    top    += element.offsetTop;
+                    element = element.offsetParent;
+                }
+                return { x: left, y: top };
+            }
+
             function selectCurrentTime(event){
-                var leftProgressData = $('#progressData').position().left;
+                var leftProgressData = getPosition(document.querySelector('#progressTotal')).x;
                 var tailleTotale = document.querySelector('#progressTotal').offsetWidth;
                 var leftMouse = event.clientX;
-                console.debug(leftProgressData);
-                console.debug(leftMouse);
-
                 var purcent = ((leftMouse - leftProgressData) / tailleTotale) * 100;
-                console.debug(purcent);
-                console.debug(musique.duration);
                 var time = (musique.duration * purcent)/100;
-                console.debug(time);
                 musique.currentTime = time;
             }
 

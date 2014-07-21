@@ -54,7 +54,6 @@
         ?>
         <script type="text/javascript">
 
-            //@TODO faire une selecteur de chanson
             //@TODO faire un systeme de playlist
             //@TODO durée de la chanson dans la base
             //@TODO boutton effacer les data hors ligne
@@ -64,6 +63,7 @@
             var db;
             var chargment = false;
             var musique = document.querySelector('#musique1');
+            var duration;
             /*var audio = "<?php //echo $audio ?>";
             var audio2 = "<?php //echo $audio2 ?>";*/
 
@@ -113,6 +113,29 @@
             // $("#chargementLP").click(function(){getMusique('1')});
             // $("#chargementCL").click(function(){getMusique('2')});
 
+            var dataCL = new Object();
+            dataCL.src = "2.mp3";
+            dataCL.duration = 171;
+            dataCL.title = "Classic";
+
+            var dataLP = new Object();
+            dataLP.src = "1.mp3";
+            dataLP.duration = 481;
+            dataLP.title = "Linkin Park";
+
+            $("#chargementLP").click(function(){setSrc(dataLP)});
+            $("#chargementCL").click(function(){setSrc(dataCL)});
+
+            function setSrc(data) {
+                musique.src = data.src;
+                duration = data.duration;
+                document.querySelector('#progressData').style.width = '0px' ;
+                document.querySelector('#progress').style.width = '0px' ;
+                document.querySelector('#play').innerHTML = 'Play';
+                document.querySelector('#time').innerHTML = '0:00 : ' + formatTime(duration);
+                document.querySelector('#titre').innerHTML = data.title;
+            }
+
             // function getMusique($id){
             //     console.debug();
             //     if (!chargment) return;
@@ -131,7 +154,7 @@
             // }
 
             $('#musique1').on('timeupdate',function(){
-                document.querySelector('#time').innerHTML = formatTime(musique.currentTime) + ' : ' + formatTime(musique.duration) ;
+                document.querySelector('#time').innerHTML = formatTime(musique.currentTime) + ' : ' + formatTime(duration) ;
                 if (musique.currentTime == 0) {
                     document.querySelector('#progress').style.width = musique.currentTime ;
                 } else {

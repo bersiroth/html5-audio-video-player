@@ -60,13 +60,192 @@
             //@TODO boutton charger une data hors ligne
 
         $( document ).ready(function() {
+
+            /* --- DATA --- */
+
             var db;
+            var musique = new Audio();
             var chargment = false;
-            var musique = document.querySelector('#musique1');
             var duration;
+
+            /* --- DATA --- */
+
+
+
+            /* --- MUSIQUE DATA --- */
+
+            var dataCL = new Object();
+            dataCL.src = "2.mp3";
+            dataCL.duration = 171;
+            dataCL.title = "Classic";
+
+            var dataLP = new Object();
+            dataLP.src = "1.mp3";
+            dataLP.duration = 481;
+            dataLP.title = "Linkin Park";
+
             /*var audio = "<?php //echo $audio ?>";
             var audio2 = "<?php //echo $audio2 ?>";*/
 
+            /* --- FIN MUSIQUE DATA --- */
+
+
+
+            /* --- CHANGEMENT MUSIQUE --- */
+
+            $("#chargementLP").click(function(){setSrc(dataLP)});
+            $("#chargementCL").click(function(){setSrc(dataCL)});
+
+            function setSrc(data) {
+                musique.src = data.src;
+                duration = data.duration;
+                document.querySelector('#progressData').style.width = '0px' ;
+                document.querySelector('#progress').style.width = '0px' ;
+                document.querySelector('#play').innerHTML = 'Play';
+                document.querySelector('#time').innerHTML = '0:00 : ' + formatTime(duration);
+                document.querySelector('#titre').innerHTML = data.title;
+            }
+
+            /* --- FIN CHANGEMENT MUSIQUE --- */
+
+
+
+            /* --- AUDIO EVENT --- */
+
+            musique.addEventListener('timeupdate',function(){
+                document.querySelector('#time').innerHTML = formatTime(musique.currentTime) + ' : ' + formatTime(duration) ;
+                if (musique.currentTime == 0) {
+                    document.querySelector('#progress').style.width = musique.currentTime ;
+                } else {
+                    var purcent = round2((musique.currentTime / musique.duration)*100);
+                    if (purcent == 0){
+                        var avancement = 0;
+                    } else {
+                        var tailleTotale = document.querySelector('#progressTotal').offsetWidth;
+                        var avancement = round2((purcent / 100) * tailleTotale) + 'px';
+                    }
+                    document.querySelector('#progress').style.width = avancement ;
+                }
+            });
+
+            musique.addEventListener('progress',function(){
+                var duration = musique.duration;
+                if (musique.buffered.length > 0) {
+                    var end = musique.buffered.end(0);
+                    var progressValue = (end/duration)*100;
+                    var tailleTotale = document.querySelector('#progressTotal').offsetWidth;
+                    var avancement = round2((progressValue / 100) * tailleTotale) + 'px';
+                    document.querySelector('#progressData').style.width = avancement ;
+                } else {
+                    document.querySelector('#progressData').style.width = '1px' ;
+                }
+            });
+
+            /* --- FIN AUDIO EVENT --- */
+
+
+
+            /* --- AUDIO CONTROLER --- */
+
+            function playPause(){
+                if (musique.getAttribute('src') == null) return;
+                var bouton  = document.querySelector('#play');
+                if (musique.paused){
+                    musique.play();
+                    bouton.innerHTML = 'Pause';
+                } else {
+                    musique.pause();
+                    bouton.innerHTML = 'Play';
+                }
+            }
+
+            function stop(){
+                if (musique.getAttribute('src') == null) return;
+                musique.currentTime = 0;
+                musique.pause();
+                document.querySelector('#play').innerHTML = 'Play';
+                document.querySelector('#progressB').style.width = '1px' ;
+            }
+
+            function setVolume(value){
+                $("#volume").slider("option", "value", value*100);
+                musique.volume = value;
+                document.querySelector('#volumeValue').innerHTML = Math.round(value*100);
+
+            }
+
+            function selectCurrentTime(event){
+                var leftProgressData = getPosition(document.querySelector('#progressTotal')).x;
+                var tailleTotale = document.querySelector('#progressTotal').offsetWidth;
+                var leftMouse = event.clientX;
+                var purcent = ((leftMouse - leftProgressData) / tailleTotale) * 100;
+                var time = (musique.duration * purcent)/100;
+                musique.currentTime = time;
+            }
+
+            $('#progress').click(function(){
+                selectCurrentTime(event)
+            });
+
+            $('#progressData').click(function(){
+                selectCurrentTime(event)
+            });
+
+            $("#play").on('click',playPause);
+
+
+            $("#stop").on('click',stop);
+
+            $("#volume").slider({
+                slide: function(event, ui) {
+                    var volume = ui.value/100;
+                    setVolume(volume);
+                },
+                value: 50
+            });
+
+            /* --- FIN AUDIO CONTROLER --- */
+
+
+
+            /* --- UTILS FUNCTIONS --- */
+
+            function getPosition(element){
+                var top = 0, left = 0;
+                while (element) {
+                    left   += element.offsetLeft;
+                    top    += element.offsetTop;
+                    element = element.offsetParent;
+                }
+                return { x: left, y: top };
+            }
+
+            function round2(nb) {
+                return (Math.round(nb*100))/100;
+            }
+
+            function formatTime(time) {
+                var hours = Math.floor(time / 3600);
+                var mins  = Math.floor((time % 3600) / 60);
+                var secs  = Math.floor(time % 60);
+                if (secs < 10) {
+                    secs = "0" + secs;
+                }
+                if (hours) {
+                    if (mins < 10) {
+                        mins = "0" + mins;
+                    }
+                    return hours + ":" + mins + ":" + secs; // hh:mm:ss
+                } else {
+                    return mins + ":" + secs; // mm:ss
+                }
+            }
+
+            /* --- FIN UTILS FUNCTIONS --- */
+
+
+
+            /* --- INDEXED DB --- */
 
             // window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
             // if (!window.indexedDB) {
@@ -113,29 +292,6 @@
             // $("#chargementLP").click(function(){getMusique('1')});
             // $("#chargementCL").click(function(){getMusique('2')});
 
-            var dataCL = new Object();
-            dataCL.src = "2.mp3";
-            dataCL.duration = 171;
-            dataCL.title = "Classic";
-
-            var dataLP = new Object();
-            dataLP.src = "1.mp3";
-            dataLP.duration = 481;
-            dataLP.title = "Linkin Park";
-
-            $("#chargementLP").click(function(){setSrc(dataLP)});
-            $("#chargementCL").click(function(){setSrc(dataCL)});
-
-            function setSrc(data) {
-                musique.src = data.src;
-                duration = data.duration;
-                document.querySelector('#progressData').style.width = '0px' ;
-                document.querySelector('#progress').style.width = '0px' ;
-                document.querySelector('#play').innerHTML = 'Play';
-                document.querySelector('#time').innerHTML = '0:00 : ' + formatTime(duration);
-                document.querySelector('#titre').innerHTML = data.title;
-            }
-
             // function getMusique($id){
             //     console.debug();
             //     if (!chargment) return;
@@ -152,139 +308,27 @@
             //         document.querySelector('#play').innerHTML = 'Play';
             //     };
             // }
+            //
+            // $("#chargementBase").click(function() {
+            //     var objectStore  = db.transaction("musique", "readwrite").objectStore("musique");
+            //     var request = objectStore.get("1");
+            //     request.onerror = function(event) {
+            //         alert('no ok');
+            //     };
+            //     request.onsuccess = function(event) {
+            //         var data = request.result;
+            //         data.data = "<?php echo $audio ?>";
+            //         var requestUpdate = objectStore.put(data);
+            //         requestUpdate.onerror = function(event) {
+            //             alert('no ok');
+            //         };
+            //         requestUpdate.onsuccess = function(event) {
+            //             alert('ok');
+            //         };
+            //     };
+            // });
 
-            $('#musique1').on('timeupdate',function(){
-                document.querySelector('#time').innerHTML = formatTime(musique.currentTime) + ' : ' + formatTime(duration) ;
-                if (musique.currentTime == 0) {
-                    document.querySelector('#progress').style.width = musique.currentTime ;
-                } else {
-                    var purcent = round2((musique.currentTime / musique.duration)*100);
-                    if (purcent == 0){
-                        var avancement = 0;
-                    } else {
-                        var tailleTotale = document.querySelector('#progressTotal').offsetWidth;
-                        var avancement = round2((purcent / 100) * tailleTotale) + 'px';
-                    }
-                    document.querySelector('#progress').style.width = avancement ;
-                }
-            });
-
-            $('#progress').click(function(){
-                selectCurrentTime(event)
-            });
-            $('#progressData').click(function(){
-                selectCurrentTime(event)
-            });
-
-            function getPosition(element){
-                var top = 0, left = 0;
-                while (element) {
-                    left   += element.offsetLeft;
-                    top    += element.offsetTop;
-                    element = element.offsetParent;
-                }
-                return { x: left, y: top };
-            }
-
-            function selectCurrentTime(event){
-                var leftProgressData = getPosition(document.querySelector('#progressTotal')).x;
-                var tailleTotale = document.querySelector('#progressTotal').offsetWidth;
-                var leftMouse = event.clientX;
-                var purcent = ((leftMouse - leftProgressData) / tailleTotale) * 100;
-                var time = (musique.duration * purcent)/100;
-                musique.currentTime = time;
-            }
-
-            $('#musique1').bind('progress',function(){
-                var duration = musique.duration;
-                if (musique.buffered.length > 0) {
-                    var end = musique.buffered.end(0);
-                    var progressValue = (end/duration)*100;
-                    var tailleTotale = document.querySelector('#progressTotal').offsetWidth;
-                    var avancement = round2((progressValue / 100) * tailleTotale) + 'px';
-                    document.querySelector('#progressData').style.width = avancement ;
-                } else {
-                    document.querySelector('#progressData').style.width = '1px' ;
-                }
-            });
-
-            function round2(nb) {
-                return (Math.round(nb*100))/100;
-            }
-
-            function formatTime(time) {
-                var hours = Math.floor(time / 3600);
-                var mins  = Math.floor((time % 3600) / 60);
-                var secs  = Math.floor(time % 60);
-                if (secs < 10) {
-                    secs = "0" + secs;
-                }
-                if (hours) {
-                    if (mins < 10) {
-                        mins = "0" + mins;
-                    }
-                    return hours + ":" + mins + ":" + secs; // hh:mm:ss
-                } else {
-                    return mins + ":" + secs; // mm:ss
-                }
-            }
-
-            $("#play").on('click',playPause);
-            function playPause(){
-                if (musique.getAttribute('src') == null) return;
-                var bouton  = document.querySelector('#play');
-                if (musique.paused){
-                    musique.play();
-                    bouton.innerHTML = 'Pause';
-                } else {
-                    musique.pause();
-                    bouton.innerHTML = 'Play';
-                }
-            }
-
-            $("#stop").on('click',stop);
-            function stop(){
-                if (musique.getAttribute('src') == null) return;
-                musique.currentTime = 0;
-                musique.pause();
-                document.querySelector('#play').innerHTML = 'Play';
-                document.querySelector('#progressB').style.width = '1px' ;
-            }
-
-            /*$("#chargementBase").click(function() {
-                var objectStore  = db.transaction("musique", "readwrite").objectStore("musique");
-                var request = objectStore.get("1");
-                request.onerror = function(event) {
-                    alert('no ok');
-                };
-                request.onsuccess = function(event) {
-                    var data = request.result;
-                    data.data = "<?php echo $audio ?>";
-                    var requestUpdate = objectStore.put(data);
-                    requestUpdate.onerror = function(event) {
-                        alert('no ok');
-                    };
-                    requestUpdate.onsuccess = function(event) {
-                        alert('ok');
-                    };
-                };
-            });*/
-
-            $("#volume").slider({
-                slide: function(event, ui) {
-                    var volume = ui.value/100;
-                    setVolume(volume);
-                },
-                value: 50
-            });
-
-            function setVolume(value)
-            {
-                $("#volume").slider("option", "value", value*100);
-                musique.volume = value;
-                document.querySelector('#volumeValue').innerHTML = Math.round(value*100);
-
-            }
+            /* --- FIN INDEXED DB --- */
         });
         </script>
         <script>

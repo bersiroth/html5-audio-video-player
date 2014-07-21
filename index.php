@@ -19,38 +19,8 @@
         </div>
         <div class="row">
             <div class="large-8 medium-8 columns">
-                <audio id="musique1" src="http://www.hulkshare.com/dl/sk5mrksy19ib/hulkshare.mp3?d=1" preload="none"></audio>
-                <div style="float: left;padding-right: 15px">
-                    <span id="titre">Titre </span> / <span id="time">-- : --</span>
-                </div>
-                <div style="float: left">
-                    <div id="progressTotal" style="width: 200px;background-color: darkgray; height: 20px"></div>
-                    <div id="progressData" style="width: 0px;background-color: blue; height: 20px; margin-top: -20px"></div>
-                    <div id="progress" style="width: 0px;background-color: red; height: 20px; margin-top: -20px"></div>
+                <div id="bersi" class="audio">
 
-                </div>
-                <span id="volumeValue" style="padding-left: 15px; float: left">50</span>
-                <div id="volume" style="width: 100px; float: left;margin-left: 10px"></div>
-                <div style="clear: both"></div>
-                <br>
-                <div style="float: left">
-                    <button id="previous" >previous</button>
-                    <button id="play" style="width: 110px">play</button>
-                    <button id="stop">stop</button>
-                    <button id="next">next</button>
-                </div>
-                <br>
-                <div>
-                    <div style="width:49%; float:left">
-                        <ul>
-                            <li><a id="chargementLP">chargement LP</a></li>
-                            <li><a id="chargementCL">chargement CLASSIC</a></li>
-                        </ul>
-                    </div>
-                    <div style="width:49%; float:left">
-                        <ul id="playlist">
-                        </ul>
-                    </div>
                 </div>
             </div>
         </div>
@@ -64,8 +34,6 @@
         ?>
         <script type="text/javascript">
 
-            //@TODO cliquer sur une chanson de la playlist pour la passer en courante
-            //@TODO injecter du HTML dans un div id bersi
             //@TODO durée de la chanson dans la base
             //@TODO boutton effacer les data hors ligne
             //@TODO boutton charger une data hors ligne
@@ -81,7 +49,7 @@
             var playlist = new Array();
             var currentMusique;
 
-            /* --- DATA --- */
+            /* --- FIN DATA --- */
 
 
 
@@ -106,6 +74,48 @@
             var audio2 = "<?php //echo $audio2 ?>";*/
 
             /* --- FIN MUSIQUE DATA --- */
+
+
+
+            /* --- INIT HTML PLAYER --- */
+
+            var html = "\
+                    <div style='float: left;padding-right: 15px'>\
+                        <span id='titre'>Titre </span> / <span id='time'>-- : --</span>\
+                    </div>\
+                    <div style='float: left'>\
+                        <div id='progressTotal' style='width: 200px;background-color: darkgray; height: 20px'></div>\
+                        <div id='progressData' style='width: 0px;background-color: blue; height: 20px; margin-top: -20px'></div>\
+                        <div id='progress' style='width: 0px;background-color: red; height: 20px; margin-top: -20px'></div>\
+                    </div>\
+                    <span id='volumeValue' style='padding-left: 15px; float: left'>50</span>\
+                    <div id='volume' style='width: 100px; float: left;margin-left: 10px'></div>\
+                    <div style='clear: both'></div>\
+                    <br>\
+                    <div style='float: left'>\
+                        <button id='previous' >previous</button>\
+                        <button id='play' style='width: 110px'>play</button>\
+                        <button id='stop'>stop</button>\
+                        <button id='next'>next</button>\
+                    </div>\
+                    <br>\
+                    <div>\
+                        <div style='width:49%; float:left'>\
+                            <ul>\
+                                <li><a id='chargementLP'>chargement LP</a></li>\
+                                <li><a id='chargementCL'>chargement CLASSIC</a></li>\
+                            </ul>\
+                        </div>\
+                        <div style='width:49%; float:left'>\
+                            <ul id='playlist'>\
+                            </ul>\
+                        </div>\
+                    </div>\
+                    ";
+
+            document.querySelector("#bersi").innerHTML = html;
+
+            /* --- FIN INIT HTML PLAYER --- */
 
 
 

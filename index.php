@@ -27,22 +27,31 @@
                     <div id="progressTotal" style="width: 200px;background-color: darkgray; height: 20px"></div>
                     <div id="progressData" style="width: 0px;background-color: blue; height: 20px; margin-top: -20px"></div>
                     <div id="progress" style="width: 0px;background-color: red; height: 20px; margin-top: -20px"></div>
+
                 </div>
+                <span id="volumeValue" style="padding-left: 15px; float: left">50</span>
+                <div id="volume" style="width: 100px; float: left;margin-left: 10px"></div>
                 <div style="clear: both"></div>
                 <br>
                 <div style="float: left">
+                    <button id="previous" >previous</button>
                     <button id="play" style="width: 110px">play</button>
                     <button id="stop">stop</button>
-                    <span id="volumeValue" style="padding-left: 15px">50</span>
+                    <button id="next">next</button>
                 </div>
-                <div id="volume" style="width: 100px; float: left;margin: 17px 0 0 10px"></div>
                 <br>
-                <ul id="playlist" style="clear:both">
-                </ul>
-                <ul>
-                    <li><a id="chargementLP">chargement LP</a></li>
-                    <li><a id="chargementCL">chargement CLASSIC</a></li>
-                </ul>
+                <div>
+                    <div style="width:49%; float:left">
+                        <ul>
+                            <li><a id="chargementLP">chargement LP</a></li>
+                            <li><a id="chargementCL">chargement CLASSIC</a></li>
+                        </ul>
+                    </div>
+                    <div style="width:49%; float:left">
+                        <ul id="playlist">
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
         <?php
@@ -55,7 +64,6 @@
         ?>
         <script type="text/javascript">
 
-            //@TODO supprimer des chanson de la playlist
             //@TODO aller a la chanson suivante
             //@TODO aller a la chanson precedente
             //@TODO injecter du HTML dans un div id bersi
@@ -71,7 +79,8 @@
             var musique = new Audio();
             var chargment = false;
             var duration;
-            var playlist = new Array();;
+            var playlist = new Array();
+            var currentMusique;
 
             /* --- DATA --- */
 
@@ -136,9 +145,9 @@
                 playlist.shift();
                 chargementPlaylist();
                 if (playlist.length > 0){
-                    setSrc(first(playlist));
+                    setSrc(playlist[0],0);
                 } else {
-                    setSrc(dataDE);
+                    setSrc(dataDE,0);
                 }
                 playPause();
             });
@@ -152,7 +161,7 @@
             function playPause(){
                 if (musique.getAttribute('src') == null) {
                     if (playlist[0] != undefined) {
-                        setSrc(first(playlist));
+                        setSrc(playlist[0],0);
                     } else {
                         return
                     }
@@ -190,7 +199,8 @@
                 musique.currentTime = time;
             }
 
-            function setSrc(data) {
+            function setSrc(data, id) {
+                currentMusique = id;
                 musique.src = data.src;
                 duration = data.duration;
                 document.querySelector('#progressData').style.width = '0px' ;
@@ -201,6 +211,7 @@
             }
 
             function addPlaylist(data){
+                data.id = Math.random();
                 playlist.push(data);
                 chargementPlaylist();
             }
@@ -216,9 +227,38 @@
             $("#chargementLP").click(function(){addPlaylist(dataLP)});
             $("#chargementCL").click(function(){addPlaylist(dataCL)});
 
+            $("#next").click(function(){
+                // console.log('===============');
+                // console.log('next');
+                // console.log('current avant : ' + currentMusique);
+                // console.log('longeur playlist : ' + playlist.length);
+                // console.log('id derniere chanson : ' + (playlist.length - 1));
+                if (currentMusique < playlist.length - 1) {
+                    setSrc(playlist[currentMusique + 1],  currentMusique + 1);
+                    playPause();
+                }
+                // console.log('current apres : ' + currentMusique);
+                // console.log('===============');
+            });
+
+            $("#previous").click(function(){
+                // console.log('===============');
+                // console.log('previous');
+                // console.log('current avant : ' + currentMusique);
+                // console.log('longeur playlist : ' + playlist.length);
+                // console.log('id derniere chanson : ' + (playlist.length - 1));
+                if (currentMusique > 0) {
+                    setSrc(playlist[currentMusique - 1], currentMusique - 1);
+                    playPause();
+                }
+                // console.log('current apres : ' + currentMusique);
+                // console.log('===============');
+            });
+
             $("#playlist").on('click', 'span', function(){
                 var key = this.getAttribute('id');
                 playlist.splice(key, 1);
+                currentMusique = currentMusique - 1;
                 chargementPlaylist();
             });
 

@@ -55,7 +55,9 @@
         ?>
         <script type="text/javascript">
 
-            //@TODO faire un systeme de playlist
+            //@TODO supprimer des chanson de la playlist
+            //@TODO aller a la chanson suivante
+            //@TODO aller a la chanson precedente
             //@TODO injecter du HTML dans un div id bersi
             //@TODO durée de la chanson dans la base
             //@TODO boutton effacer les data hors ligne
@@ -131,10 +133,10 @@
             });
 
             musique.addEventListener('ended',function(){
-                playlist = playlist.slice(1);
+                playlist.shift();
                 chargementPlaylist();
                 if (playlist.length > 0){
-                    setSrc(playlist[0]);
+                    setSrc(first(playlist));
                 } else {
                     setSrc(dataDE);
                 }
@@ -150,7 +152,7 @@
             function playPause(){
                 if (musique.getAttribute('src') == null) {
                     if (playlist[0] != undefined) {
-                        setSrc(playlist[0]);
+                        setSrc(first(playlist));
                     } else {
                         return
                     }
@@ -206,13 +208,19 @@
             function chargementPlaylist(){
                 var htmlPlaylist = "";
                 for (var i = 0; i < playlist.length; i++) {
-                    htmlPlaylist = htmlPlaylist + "<li>" + playlist[i].title + "</li>";
+                    htmlPlaylist = htmlPlaylist + "<li>" + playlist[i].title + " <span id='" + i + "'>X</span></li>";
                 };
                 document.querySelector('#playlist').innerHTML = htmlPlaylist;
             }
 
             $("#chargementLP").click(function(){addPlaylist(dataLP)});
             $("#chargementCL").click(function(){addPlaylist(dataCL)});
+
+            $("#playlist").on('click', 'span', function(){
+                var key = this.getAttribute('id');
+                playlist.splice(key, 1);
+                chargementPlaylist();
+            });
 
             $('#progress').click(function(){
                 selectCurrentTime(event)
@@ -240,6 +248,8 @@
 
 
             /* --- UTILS FUNCTIONS --- */
+
+            function first(p){for(var i in p)return p[i];}
 
             function getPosition(element){
                 var top = 0, left = 0;

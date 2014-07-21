@@ -64,8 +64,7 @@
         ?>
         <script type="text/javascript">
 
-            //@TODO aller a la chanson suivante
-            //@TODO aller a la chanson precedente
+            //@TODO cliquer sur une chanson de la playlist pour la passer en courante
             //@TODO injecter du HTML dans un div id bersi
             //@TODO durée de la chanson dans la base
             //@TODO boutton effacer les data hors ligne
@@ -219,7 +218,7 @@
             function chargementPlaylist(){
                 var htmlPlaylist = "";
                 for (var i = 0; i < playlist.length; i++) {
-                    htmlPlaylist = htmlPlaylist + "<li>" + playlist[i].title + " <span id='" + i + "'>X</span></li>";
+                    htmlPlaylist = htmlPlaylist + "<li id='" + i + "'>" + playlist[i].title + " <span id='" + i + "'>X</span></li>";
                 };
                 document.querySelector('#playlist').innerHTML = htmlPlaylist;
             }
@@ -260,6 +259,13 @@
                 playlist.splice(key, 1);
                 currentMusique = currentMusique - 1;
                 chargementPlaylist();
+            });
+
+            $("#playlist").on('click', 'li', function(){
+                var key = this.getAttribute('id');
+                console.debug(key);
+                setSrc(playlist[key], key);
+                playPause();
             });
 
             $('#progress').click(function(){

@@ -208,7 +208,6 @@
             }
 
             function setSrc(data, id) {
-                console.debug(data);
                 currentMusique = id;
                 musique.src = data.src;
                 duration = data.duration;

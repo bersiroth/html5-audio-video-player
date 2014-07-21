@@ -91,7 +91,7 @@
             dataLP.title = "Linkin Park";
 
             /*var audio = "<?php //echo $audio ?>";
-            var audio2 = "<?php //echo $audio2 ?>";*/
+            var audio2 = "<?php //echo $audio2 ?>"; */
 
             /* --- FIN MUSIQUE DATA --- */
 

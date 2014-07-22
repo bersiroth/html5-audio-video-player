@@ -42,8 +42,6 @@
         ?>
         <script type="text/javascript">
 
-            //@TODO changer l'ordre de la playlist avec un drag and drop
-            //@TODO durée dans un attrib duree du lien
             //@TODO passer le html du lecteur dans un fichier apart et le lire depuis le js
             //@TODO passer le js dans un fichier apart
             //@TODO passer le css dans un fichier et refaire les class et id
@@ -59,6 +57,7 @@
             //@TODO boutton charger une data hors ligne
             //@TODO boutton effacer les data hors ligne
             //@TODO upload musique
+            //@TODO rendre le css responsive
 
         $.event.props.push('dataTransfer');
         $( document ).ready(function() {

@@ -34,9 +34,20 @@
         ?>
         <script type="text/javascript">
 
-            //@TODO durée de la chanson dans la base
-            //@TODO boutton effacer les data hors ligne
+            //@TODO ajout d'autre chanson
+            //@TODO changer l'ordre de la playlist avec un drag and drop
+            //@TODO durée dans un attrib duree du lien
+            //@TODO créer une base de donnée (musique)
+            //@TODO créer une table user
+            //@TODO créer une table musique
+            //@TODO créer une table album
+            //@TODO créer une table artiste
+            //@TODO créer une table playlist
+            //@TODO sauvegarder les playlist en base et hors ligne (localstorage + base)
+            //@TODO supprimer une playlist (base + localstorage)
             //@TODO boutton charger une data hors ligne
+            //@TODO boutton effacer les data hors ligne
+            //@TODO upload musique
 
         $( document ).ready(function() {
 
@@ -59,16 +70,6 @@
             dataDE.src = 'default';
             dataDE.duration = 0;
             dataDE.title = "Titre";
-
-            var dataCL = new Object();
-            dataCL.src = "2.mp3";
-            dataCL.duration = 171;
-            dataCL.title = "Classic";
-
-            var dataLP = new Object();
-            dataLP.src = "1.mp3";
-            dataLP.duration = 481;
-            dataLP.title = "Linkin Park";
 
             /*var audio = "<?php //echo $audio ?>";
             var audio2 = "<?php //echo $audio2 ?>";*/
@@ -100,10 +101,13 @@
                     </div>\
                     <br>\
                     <div>\
-                        <div style='width:49%; float:left'>\
+                        <div style='width:49%; float:left' id='chargementMusique'>\
                             <ul>\
-                                <li><a id='chargementLP'>chargement LP</a></li>\
-                                <li><a id='chargementCL'>chargement CLASSIC</a></li>\
+                                <li><a id='1' title='titre 1' duration='481'>1</a></li>\
+                                <li><a id='2' title='titre 2' duration='171'>2</a></li>\
+                                <li><a id='3' title='titre 3' duration='380'>3</a></li>\
+                                <li><a id='4' title='titre 4' duration='360'>4</a></li>\
+                                <li><a id='5' title='titre 5' duration='367'>5</a></li>\
                             </ul>\
                         </div>\
                         <div style='width:49%; float:left'>\
@@ -219,7 +223,11 @@
             }
 
             function addPlaylist(data){
-                playlist.push(data);
+                musiqueData = new Object();
+                musiqueData.src = data.id + '.mp3';
+                musiqueData.duration = data.getAttribute('duration');
+                musiqueData.title = data.title;
+                playlist.push(musiqueData);
                 chargementPlaylist();
             }
 
@@ -233,19 +241,18 @@
                 document.querySelector('#playlist').innerHTML = htmlPlaylist;
             }
 
-            $("#chargementLP").click(function(){addPlaylist(dataLP)});
-            $("#chargementCL").click(function(){addPlaylist(dataCL)});
-
-            $("#next").click(function(){
-                nextMusique();
-            });
-
             function nextMusique(){
                 if (currentMusique < playlist.length - 1) {
                     setSrc(playlist[currentMusique + 1],  currentMusique + 1);
                     playPause();
                 }
             }
+
+            $("#chargementMusique a").click(function(){addPlaylist(this)});
+
+            $("#next").click(function(){
+                nextMusique();
+            });
 
             $("#previous").click(function(){
                 if (currentMusique > 0) {
@@ -256,9 +263,14 @@
 
             $("#playlist").on('click', 'li span:last-child', function(){
                 var key = this.parentNode.getAttribute('id');
-                if(key != currentMusique){
+                if(key != currentMusique || playlist.length == 1){
                     playlist.splice(key, 1);
-                    currentMusique = currentMusique - 1;
+                    if(playlist.length == 0) {
+                        setSrc(dataDE,-1);
+                    }
+                    if (key < currentMusique) {
+                        currentMusique = currentMusique - 1;
+                    }
                     chargementPlaylist();
                 }
             });
@@ -278,7 +290,6 @@
             });
 
             $("#play").on('click',playPause);
-
 
             $("#stop").on('click',stop);
 
@@ -361,7 +372,6 @@
             // request.onsuccess = function (evt) {
             //     db = this.result;
             //     chargment = true;
-            //     console.debug('ok chargement ');
             // };
 
             // request.onupgradeneeded = function(event) {
@@ -381,7 +391,6 @@
             // $("#chargementCL").click(function(){getMusique('2')});
 
             // function getMusique($id){
-            //     console.debug();
             //     if (!chargment) return;
             //     var transaction = db.transaction("musique");
             //     var objectStore = transaction.objectStore("musique");

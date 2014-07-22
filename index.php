@@ -60,6 +60,7 @@
             //@TODO boutton effacer les data hors ligne
             //@TODO upload musique
 
+        $.event.props.push('dataTransfer');
         $( document ).ready(function() {
 
             /* --- DATA --- */
@@ -246,8 +247,8 @@
                 var htmlPlaylist = "";
                 var style = "";
                 for (var i = 0; i < playlist.length; i++) {
-                    style = (currentMusique == i) ? "style='color:blue;border:solid 1px black;margin-bottom:10px'" : "style='border:solid 1px black;margin-bottom:10px'" ;
-                    htmlPlaylist = htmlPlaylist + "<li id='" + i + "' " + style + " draggable='true'><span>" + playlist[i].title + "</span> <span style='float: right'>X</span></li>";
+                    style = (currentMusique == i) ? "color:blue" : "" ;
+                    htmlPlaylist = htmlPlaylist + "<li id='" + i + "' style='border-bottom:solid 1px black;margin-bottom:10px;" + style + "' draggable='true'><span>" + playlist[i].title + "</span> <span style='float: right'>X</span></li>";
                 };
                 document.querySelector('#playlist').innerHTML = htmlPlaylist;
             }
@@ -293,45 +294,47 @@
             });
 
             $('#playlist').on({
-                // dragstart: function(e) {
-                //     $this = $(this);
-                //     i = $this.index();
-                //     $this.css('opacity', '0.5');
-                // },
-                // dragenter: function(e) {
-                //     if (i !== $(this).index()) {
-                //         $(this).animate({
-                //             fontSize: '20px'
-                //         }, 'fast');
-                //     }
-                // },
-                // dragleave: function() {
-                //     if (i !== $(this).index()) {
-                //         $(this).animate({
-                //             fontSize: '17px'
-                //         }, 'fast');
-                //     }
-                // },
+                dragstart: function(e) {
+                    $this = $(this);
+                    i = $this.index();
+                    $this.css('opacity', '0.5');
+                },
+                dragenter: function(e) {
+                    if (i !== $(this).index()) {
+                        $(this).animate({
+                            fontSize: '20px'
+                        }, 'fast');
+                    }
+                },
+                dragleave: function() {
+                    if (i !== $(this).index()) {
+                        $(this).animate({
+                            fontSize: '17px'
+                        }, 'fast');
+                    }
+                },
+                dragover: function(e) {
+                    e.preventDefault();
+                },
                 drop: function(e) {
-                    alert('test');
-                    // if (i !== $(this).index()) {
-                    //     console.debug('id depart = ' + $this.attr('id'));
-                    //     console.debug('id arrive = ' + $(this).attr('id'));
-                    //     $depart = $this.attr('id');
-                    //     $arrive = $(this).attr('id');
-                    //     $tmp = playlist[$arrive];
-                    //     playlist[$arrive] = playlist[$depart];
-                    //     playlist[$depart] = $tmp;
-                    //     chargementPlaylist();
-                    // }
-                    // $(this).animate({
-                    //     fontSize: '17px'
-                    // }, 'fast');
+                    if (i !== $(this).index()) {
+                        $depart = $this.attr('id');
+                        $arrive = $(this).attr('id');
+                        $tmp = playlist[$arrive];
+                        playlist[$arrive] = playlist[$depart];
+                        playlist[$depart] = $tmp;
+                        if ($depart == currentMusique){
+                            currentMusique = $arrive;
+                        }
+                        chargementPlaylist();
+                    }
+                    $(this).animate({
+                        fontSize: '17px'
+                    }, 'fast');
+                },
+                dragend: function() {
+                    $(this).css('opacity', '1');
                 }
-                // ,
-                // dragend: function() {
-                //     $(this).css('opacity', '1');
-                // }
             },'li');
 
             $('#progress').click(function(){

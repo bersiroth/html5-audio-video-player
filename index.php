@@ -45,6 +45,8 @@
             //@TODO passer le html du lecteur dans un fichier apart et le lire depuis le js
             //@TODO passer le js dans un fichier apart
             //@TODO passer le css dans un fichier et refaire les class et id
+            //@TODO bouton repete musique actuelle
+            //@TODO bouton repete playlist
             //@TODO créer une base de donnée (musique)
             //@TODO créer une table user
             //@TODO créer une table musique
@@ -91,44 +93,9 @@
 
             /* --- INIT HTML PLAYER --- */
 
-            var html = "\
-                    <div style='float: left;padding-right: 15px'>\
-                        <span id='titre'>Titre </span> / <span id='time'>-- : --</span>\
-                    </div>\
-                    <div style='float: left'>\
-                        <div id='progressTotal' style='width: 200px;background-color: darkgray; height: 20px'></div>\
-                        <div id='progressData' style='width: 0px;background-color: blue; height: 20px; margin-top: -20px'></div>\
-                        <div id='progress' style='width: 0px;background-color: red; height: 20px; margin-top: -20px'></div>\
-                    </div>\
-                    <span id='volumeValue' style='padding-left: 15px; float: left'>50</span>\
-                    <div id='volume' style='width: 100px; float: left;margin-left: 10px'></div>\
-                    <div style='clear: both'></div>\
-                    <br>\
-                    <div style='float: left'>\
-                        <button id='previous' >previous</button>\
-                        <button id='play' style='width: 110px'>play</button>\
-                        <button id='stop'>stop</button>\
-                        <button id='next'>next</button>\
-                    </div>\
-                    <br>\
-                    <div>\
-                        <div style='width:49%; float:left' id='chargementMusique'>\
-                            <ul>\
-                                <li><a id='1' title='titre 1' duration='481' >1</a></li>\
-                                <li><a id='2' title='titre 2' duration='171' >2</a></li>\
-                                <li><a id='3' title='titre 3' duration='380' >3</a></li>\
-                                <li><a id='4' title='titre 4' duration='360' >4</a></li>\
-                                <li><a id='5' title='titre 5' duration='367' >5</a></li>\
-                            </ul>\
-                        </div>\
-                        <div style='width:49%; float:left'>\
-                            <ul id='playlist'>\
-                            </ul>\
-                        </div>\
-                    </div>\
-                    ";
-
-            document.querySelector("#bersi").innerHTML = html;
+            document.querySelector("#bersi").innerHTML = "\
+                <?php echo file_get_contents('js/bersi-player/html/template.html') ?>
+                ";
 
             /* --- FIN INIT HTML PLAYER --- */
 
@@ -323,7 +290,9 @@
                         playlist[$arrive] = playlist[$depart];
                         playlist[$depart] = $tmp;
                         if ($depart == currentMusique){
-                            currentMusique = $arrive;
+                            currentMusique = parseInt($arrive);
+                        } else if ($arrive == currentMusique) {
+                            currentMusique = parseInt($depart);
                         }
                         chargementPlaylist();
                     }

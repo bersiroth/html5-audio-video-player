@@ -10,6 +10,14 @@
         <script src="js/vendor/jquery.js"></script>
         <script src="js/foundation.min.js"></script>
         <script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+        <style type="text/css">
+            [draggable] {
+                -moz-user-select: none;
+                -khtml-user-select: none;
+                -webkit-user-select: none;
+                user-select: none;
+            }
+        </style>
     </head>
     <body>
         <div class="row">
@@ -34,15 +42,18 @@
         ?>
         <script type="text/javascript">
 
-            //@TODO ajout d'autre chanson
             //@TODO changer l'ordre de la playlist avec un drag and drop
             //@TODO durée dans un attrib duree du lien
+            //@TODO passer le html du lecteur dans un fichier apart et le lire depuis le js
+            //@TODO passer le js dans un fichier apart
+            //@TODO passer le css dans un fichier et refaire les class et id
             //@TODO créer une base de donnée (musique)
             //@TODO créer une table user
             //@TODO créer une table musique
             //@TODO créer une table album
             //@TODO créer une table artiste
             //@TODO créer une table playlist
+            //@TODO creer un systeme de conection
             //@TODO sauvegarder les playlist en base et hors ligne (localstorage + base)
             //@TODO supprimer une playlist (base + localstorage)
             //@TODO boutton charger une data hors ligne
@@ -103,11 +114,11 @@
                     <div>\
                         <div style='width:49%; float:left' id='chargementMusique'>\
                             <ul>\
-                                <li><a id='1' title='titre 1' duration='481'>1</a></li>\
-                                <li><a id='2' title='titre 2' duration='171'>2</a></li>\
-                                <li><a id='3' title='titre 3' duration='380'>3</a></li>\
-                                <li><a id='4' title='titre 4' duration='360'>4</a></li>\
-                                <li><a id='5' title='titre 5' duration='367'>5</a></li>\
+                                <li><a id='1' title='titre 1' duration='481' >1</a></li>\
+                                <li><a id='2' title='titre 2' duration='171' >2</a></li>\
+                                <li><a id='3' title='titre 3' duration='380' >3</a></li>\
+                                <li><a id='4' title='titre 4' duration='360' >4</a></li>\
+                                <li><a id='5' title='titre 5' duration='367' >5</a></li>\
                             </ul>\
                         </div>\
                         <div style='width:49%; float:left'>\
@@ -235,8 +246,8 @@
                 var htmlPlaylist = "";
                 var style = "";
                 for (var i = 0; i < playlist.length; i++) {
-                    style = (currentMusique == i) ? "style='color:blue'" : "" ;
-                    htmlPlaylist = htmlPlaylist + "<li id='" + i + "' " + style + "><span>" + playlist[i].title + "</span> <span>X</span></li>";
+                    style = (currentMusique == i) ? "style='color:blue;border:solid 1px black;margin-bottom:10px'" : "style='border:solid 1px black;margin-bottom:10px'" ;
+                    htmlPlaylist = htmlPlaylist + "<li id='" + i + "' " + style + " draggable='true'><span>" + playlist[i].title + "</span> <span style='float: right'>X</span></li>";
                 };
                 document.querySelector('#playlist').innerHTML = htmlPlaylist;
             }
@@ -281,6 +292,48 @@
                 playPause();
             });
 
+            $('#playlist').on({
+                // dragstart: function(e) {
+                //     $this = $(this);
+                //     i = $this.index();
+                //     $this.css('opacity', '0.5');
+                // },
+                // dragenter: function(e) {
+                //     if (i !== $(this).index()) {
+                //         $(this).animate({
+                //             fontSize: '20px'
+                //         }, 'fast');
+                //     }
+                // },
+                // dragleave: function() {
+                //     if (i !== $(this).index()) {
+                //         $(this).animate({
+                //             fontSize: '17px'
+                //         }, 'fast');
+                //     }
+                // },
+                drop: function(e) {
+                    alert('test');
+                    // if (i !== $(this).index()) {
+                    //     console.debug('id depart = ' + $this.attr('id'));
+                    //     console.debug('id arrive = ' + $(this).attr('id'));
+                    //     $depart = $this.attr('id');
+                    //     $arrive = $(this).attr('id');
+                    //     $tmp = playlist[$arrive];
+                    //     playlist[$arrive] = playlist[$depart];
+                    //     playlist[$depart] = $tmp;
+                    //     chargementPlaylist();
+                    // }
+                    // $(this).animate({
+                    //     fontSize: '17px'
+                    // }, 'fast');
+                }
+                // ,
+                // dragend: function() {
+                //     $(this).css('opacity', '1');
+                // }
+            },'li');
+
             $('#progress').click(function(){
                 selectCurrentTime(event)
             });
@@ -306,8 +359,6 @@
 
 
             /* --- UTILS FUNCTIONS --- */
-
-            function first(p){for(var i in p)return p[i];}
 
             function getPosition(element){
                 var top = 0, left = 0;

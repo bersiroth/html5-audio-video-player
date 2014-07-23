@@ -29,19 +29,18 @@
         <div class="row">
             <div class="large-8 medium-8 columns">
                 <div id="bersi" class="audio">
-
                 </div>
             </div>
         </div>
+
         <?php
-        // $contents = file_get_contents('1.mp3');
-        // $base64 = base64_encode( $contents );
-        // $audio = 'data:audio/mp3;base64,' . $base64;
-        // $contents = file_get_contents('2.mp3');
-        // $base64 = base64_encode( $contents );
-        // $audio2 = 'data:audio/mp3;base64,' . $base64;
-        ?>
-        <script type="text/javascript">
+
+            // $contents = file_get_contents('1.mp3');
+            // $base64 = base64_encode( $contents );
+            // $audio = 'data:audio/mp3;base64,' . $base64;
+            // $contents = file_get_contents('2.mp3');
+            // $base64 = base64_encode( $contents );
+            // $audio2 = 'data:audio/mp3;base64,' . $base64;
 
             //@TODO passer le js dans un fichier apart
             //@TODO passer le css dans un fichier et refaire les class et id
@@ -61,8 +60,8 @@
             //@TODO upload musique
             //@TODO rendre le css responsive
 
+        ?>
 
-        </script>
         <script>
             $(document).foundation();
         </script>

@@ -29,12 +29,8 @@ $( document ).ready(function() {
 
     /* --- INIT HTML PLAYER --- */
 
-    $.get(
-        "js/bersi-player/html/template.html",
-        function(data) {
-           document.querySelector("#bersi").innerHTML = data ;
-        }
-    );
+    $("#bersi").load('js/bersi-player/html/template.html');
+
     /* --- FIN INIT HTML PLAYER --- */
 
 
@@ -105,7 +101,6 @@ $( document ).ready(function() {
     }
 
     function stop(){
-        console.debug('test')
         if (musique.getAttribute('src') == null) return;
         musique.currentTime = 0;
         musique.pause();
@@ -165,20 +160,27 @@ $( document ).ready(function() {
         }
     }
 
-    $("#chargementMusique a").click(function(){addPlaylist(this)});
 
-    $("#next").click(function(){
+    $.fn.live = function(eventAction,functionAction) {
+        $("body").on(eventAction,this.selector,functionAction);
+    };
+
+    $("#chargementMusique a").live('click',function(){
+        addPlaylist(this);
+    });
+
+    $("#next").live('click',function(){
         nextMusique();
     });
 
-    $("#previous").click(function(){
+    $("#previous").live('click',function(){
         if (currentMusique > 0) {
             setSrc(playlist[currentMusique - 1], currentMusique - 1);
             playPause();
         }
     });
 
-    $("#playlist").on('click', 'li span:last-child', function(){
+    $("#playlist li span:last-child").live('click', function(){
         var key = this.parentNode.getAttribute('id');
         if(key != currentMusique || playlist.length == 1){
             playlist.splice(key, 1);
@@ -192,13 +194,13 @@ $( document ).ready(function() {
         }
     });
 
-    $("#playlist").on('click', 'li span:first-child', function(){
+    $("#playlist li span:first-child").live('click', function(){
         var key = this.parentNode.getAttribute('id');
         setSrc(playlist[key], key);
         playPause();
     });
 
-    $('#playlist').on({
+    $('#playlist li').live({
         dragstart: function(e) {
             $this = $(this);
             i = $this.index();
@@ -242,26 +244,29 @@ $( document ).ready(function() {
         dragend: function() {
             $(this).css('opacity', '1');
         }
-    },'li');
+    });
 
-    $('#progress').click(function(){
+    $('#progress').live('click',function(){
         selectCurrentTime(event)
     });
 
-    $('#progressData').click(function(){
+    $('#progressData').live('click',function(){
         selectCurrentTime(event)
     });
 
-    $("#play").on('click',playPause);
+    $("#play").live('click',playPause);
 
-    $("#stop").on('click',stop);
+    $("#stop").live('click',stop);
 
-    $("#volume").slider({
-        slide: function(event, ui) {
-            var volume = ui.value/100;
-            setVolume(volume);
-        },
-        value: 50
+    $("#volume").ready(function(){
+        console.debug('test');
+        $("#volume").slider({
+            slide: function(event, ui) {
+                var volume = ui.value/100;
+                setVolume(volume);
+            },
+            value: 50
+        })
     });
 
     /* --- FIN AUDIO CONTROLER --- */

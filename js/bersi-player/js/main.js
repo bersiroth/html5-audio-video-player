@@ -258,16 +258,14 @@ $( document ).ready(function() {
 
     $("#stop").live('click',stop);
 
-    $("#volume").ready(function(){
-        console.debug('test');
-        $("#volume").slider({
-            slide: function(event, ui) {
-                var volume = ui.value/100;
-                setVolume(volume);
-            },
+    var elem = $('body').find("#volume");
+
+    console.debug(elem);
+
+    elem.slider({
             value: 50
-        })
-    });
+        });
+
 
     /* --- FIN AUDIO CONTROLER --- */
 

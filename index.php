@@ -11,6 +11,7 @@
         <script src="js/foundation.min.js"></script>
         <script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
         <script src="js/bersi-player/js/main.js"></script>
+        <link rel="stylesheet" href="js/bersi-player/css/main.css">
         <style type="text/css">
             [draggable] {
                 -moz-user-select: none;

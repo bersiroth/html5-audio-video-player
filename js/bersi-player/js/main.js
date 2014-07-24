@@ -29,11 +29,22 @@ $( document ).ready(function() {
 
     /* --- INIT HTML PLAYER --- */
 
-    $("#bersi").load('js/bersi-player/html/template.html');
+    $.get('js/bersi-player/html/template.html')
+        .success(function(result){
+            init(result);
+        });
 
     /* --- FIN INIT HTML PLAYER --- */
 
-
+    function init(data) {
+        $("#bersi").html(data);
+        $("#volume").slider({
+            slide: function(event, ui) {
+                setVolume(ui.value/100);
+            },
+            value: 50
+        });
+    }
 
     /* --- AUDIO EVENT --- */
 
@@ -257,15 +268,6 @@ $( document ).ready(function() {
     $("#play").live('click',playPause);
 
     $("#stop").live('click',stop);
-
-    var elem = $('body').find("#volume");
-
-    console.debug(elem);
-
-    elem.slider({
-            value: 50
-        });
-
 
     /* --- FIN AUDIO CONTROLER --- */
 

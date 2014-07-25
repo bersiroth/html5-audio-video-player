@@ -4,4 +4,8 @@
         <name>foundation</name>
         <color>blue</color>
     </template>
+    <logo>
+        <display>true</display>
+        <url>test</url>
+    </logo>
 </config>

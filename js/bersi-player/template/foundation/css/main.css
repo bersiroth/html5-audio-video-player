@@ -1,4 +1,58 @@
 /* line 1, main.scss */
-body {
-  background-color: transparent;
+#lecteur-total {
+  height: 60px;
+  border: 1px solid #999;
+  position: fixed;
+  background-color: grey;
+  left: 12%;
+}
+
+/* line 9, main.scss */
+#img-album {
+  height: 61px;
+  margin-right: 15px;
+}
+
+/* line 14, main.scss */
+#progressTotal {
+  background-color: darkgray;
+  height: 10px;
+  width: 100%;
+}
+
+/* line 20, main.scss */
+#progressData {
+  background-color: blue;
+  height: 10px;
+  width: 0px;
+  margin-top: -10px;
+}
+
+/* line 27, main.scss */
+#progress {
+  background-color: red;
+  height: 10px;
+  width: 0px;
+  margin-top: -10px;
+}
+
+/* line 34, main.scss */
+#time {
+  font-size: 8px;
+}
+
+/* line 38, main.scss */
+#volume {
+  float: left;
+}
+
+/* line 42, main.scss */
+#playlistEtMusique {
+  margin-top: 60px;
+}
+
+/* line 46, main.scss */
+#bar-progress .left {
+  position: relative;
+  width: 88%;
 }

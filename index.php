@@ -21,11 +21,6 @@
         </style>
     </head>
     <body>
-        <div class="row">
-            <header>
-                <h1>musique</h1>
-            </header>
-        </div>
         <div id="bersi" class="audio"></div>
 
         <?php
@@ -37,7 +32,6 @@
             // $base64 = base64_encode( $contents );
             // $audio2 = 'data:audio/mp3;base64,' . $base64;
 
-            //@TODO faire un fichier de configuration
             //@TODO faire un template responsive avec bootstrape et un template classique avec du css simple
             //@TODO passer le js dans un fichier apart
             //@TODO passer le css dans un fichier et refaire les class et id

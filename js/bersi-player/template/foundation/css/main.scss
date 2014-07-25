@@ -1,3 +1,49 @@
-body {
-    background-color: transparent;
+#lecteur-total {
+    height: 60px;
+    border: 1px solid #999;
+    position: fixed;
+    background-color: grey;
+    left:12%;
+}
+
+#img-album {
+    height: 61px;
+    margin-right: 15px;
+}
+
+#progressTotal {
+    background-color: darkgray;
+    height: 10px;
+    width: 100%;
+}
+
+#progressData {
+    background-color: blue;
+    height: 10px;
+    width: 0px;
+    margin-top: -10px;
+}
+
+#progress {
+    background-color: red;
+    height: 10px;
+    width: 0px;
+    margin-top: -10px;
+}
+
+#time {
+    font-size: 8px;
+}
+
+#volume {
+    float:left;
+}
+
+#playlistEtMusique {
+    margin-top: 60px;
+}
+
+#bar-progress .left {
+    position: relative;
+    width: 88%;
 }

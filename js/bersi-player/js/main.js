@@ -31,7 +31,7 @@ $( document ).ready(function() {
     /* --- LOAD CONFIG --- */
 
     $.get('js/bersi-player/config/global-config.xml', function(data) {
-        config['template'] = $(data).find("template name").text();
+        config = getXMLToArray(data.getElementsByTagName("config"));
         loadTemplate();
     });
 
@@ -42,7 +42,7 @@ $( document ).ready(function() {
     /* --- LOAD TEMPLATE PLAYER --- */
 
     function loadTemplate() {
-        $.get('js/bersi-player/template/' + config['template'] + '/html/template.html', function(data) {
+        $.get('js/bersi-player/template/' + config['template']['name'] + '/html/template.html', function(data) {
             init(data);
         });
         // $("head").append(
@@ -65,7 +65,7 @@ $( document ).ready(function() {
     /* --- AUDIO EVENT --- */
 
     musique.addEventListener('timeupdate',function(){
-        document.querySelector('#time').innerHTML = formatTime(musique.currentTime) + ' : ' + formatTime(duration) ;
+        document.querySelector('#time').innerHTML = formatTime(musique.currentTime);
         if (musique.currentTime == 0) {
             document.querySelector('#progress').style.width = musique.currentTime ;
         } else {
@@ -320,6 +320,21 @@ $( document ).ready(function() {
         } else {
             return mins + ":" + secs; // mm:ss
         }
+    }
+
+    function getXMLToArray(xmlDoc){
+        var thisArray = new Array();
+        if($(xmlDoc).children().length > 0){
+            $(xmlDoc).children().each(function(){
+                if($(xmlDoc).find(this.nodeName).children().length > 0){
+                    var NextNode = $(xmlDoc).find(this.nodeName);
+                    thisArray[this.nodeName] = getXMLToArray(NextNode);
+                } else {
+                    thisArray[this.nodeName] = $(xmlDoc).find(this.nodeName).text();
+                }
+            });
+        }
+        return thisArray;
     }
 
     /* --- FIN UTILS FUNCTIONS --- */

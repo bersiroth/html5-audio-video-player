@@ -8,6 +8,7 @@ $( document ).ready(function() {
     var duration;
     var playlist = new Array();
     var currentMusique;
+    var config = new Array();
 
     /* --- FIN DATA --- */
 
@@ -27,14 +28,29 @@ $( document ).ready(function() {
 
 
 
-    /* --- INIT HTML PLAYER --- */
+    /* --- LOAD CONFIG --- */
 
-    $.get('js/bersi-player/html/template.html')
-        .success(function(result){
-            init(result);
+    $.get('js/bersi-player/config/global-config.xml', function(data) {
+        config['template'] = $(data).find("template name").text();
+        loadTemplate();
+    });
+
+    /* --- FIN LOAD CONFIG --- */
+
+
+
+    /* --- LOAD TEMPLATE PLAYER --- */
+
+    function loadTemplate() {
+        $.get('js/bersi-player/template/' + config['template'] + '/html/template.html', function(data) {
+            init(data);
         });
+        $("head").append(
+            $(document.createElement("link")).attr({rel:"stylesheet", type:"text/css", href:"js/bersi-player/template/" + config['template'] + "/css/main.css"})
+        );
+    }
 
-    /* --- FIN INIT HTML PLAYER --- */
+    /* --- FIN LOAD TEMPLATE PLAYER --- */
 
     function init(data) {
         $("#bersi").html(data);

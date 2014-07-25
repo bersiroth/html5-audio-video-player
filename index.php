@@ -11,7 +11,6 @@
         <script src="js/foundation.min.js"></script>
         <script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
         <script src="js/bersi-player/js/main.js"></script>
-        <link rel="stylesheet" href="js/bersi-player/css/main.css">
         <style type="text/css">
             [draggable] {
                 -moz-user-select: none;
@@ -43,6 +42,8 @@
             // $base64 = base64_encode( $contents );
             // $audio2 = 'data:audio/mp3;base64,' . $base64;
 
+            //@TODO faire un fichier de configuration
+            //@TODO faire un template responsive avec bootstrape et un template classique avec du css simple
             //@TODO passer le js dans un fichier apart
             //@TODO passer le css dans un fichier et refaire les class et id
             //@TODO bouton repete musique actuelle

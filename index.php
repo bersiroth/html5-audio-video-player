@@ -26,12 +26,7 @@
                 <h1>musique</h1>
             </header>
         </div>
-        <div class="row">
-            <div class="large-8 medium-8 columns">
-                <div id="bersi" class="audio">
-                </div>
-            </div>
-        </div>
+        <div id="bersi" class="audio"></div>
 
         <?php
 

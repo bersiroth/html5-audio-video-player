@@ -45,9 +45,9 @@ $( document ).ready(function() {
         $.get('js/bersi-player/template/' + config['template'] + '/html/template.html', function(data) {
             init(data);
         });
-        $("head").append(
-            $(document.createElement("link")).attr({rel:"stylesheet", type:"text/css", href:"js/bersi-player/template/" + config['template'] + "/css/main.css"})
-        );
+        // $("head").append(
+        //     $(document.createElement("link")).attr({rel:"stylesheet", type:"text/css", href:"js/bersi-player/template/" + config['template'] + "/css/main.css"})
+        // );
     }
 
     /* --- FIN LOAD TEMPLATE PLAYER --- */

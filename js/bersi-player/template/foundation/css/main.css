@@ -1,26 +1,25 @@
 /* line 1, main.scss */
 #lecteur-total {
-  height: 60px;
+  height: 65px;
   border: 1px solid #999;
-  position: fixed;
   background-color: grey;
-  left: 12%;
+  padding: 10px 0;
 }
 
-/* line 9, main.scss */
+/* line 8, main.scss */
 #img-album {
   height: 61px;
   margin-right: 15px;
 }
 
-/* line 14, main.scss */
+/* line 13, main.scss */
 #progressTotal {
   background-color: darkgray;
   height: 10px;
   width: 100%;
 }
 
-/* line 20, main.scss */
+/* line 19, main.scss */
 #progressData {
   background-color: blue;
   height: 10px;
@@ -28,7 +27,7 @@
   margin-top: -10px;
 }
 
-/* line 27, main.scss */
+/* line 26, main.scss */
 #progress {
   background-color: red;
   height: 10px;
@@ -36,23 +35,23 @@
   margin-top: -10px;
 }
 
-/* line 34, main.scss */
+/* line 33, main.scss */
 #time {
   font-size: 8px;
 }
 
-/* line 38, main.scss */
+/* line 37, main.scss */
 #volume {
   float: left;
 }
 
-/* line 42, main.scss */
+/* line 41, main.scss */
 #playlistEtMusique {
   margin-top: 60px;
 }
 
-/* line 46, main.scss */
+/* line 45, main.scss */
 #bar-progress .left {
   position: relative;
-  width: 88%;
+  width: 85%;
 }

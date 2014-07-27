@@ -1,9 +1,8 @@
 #lecteur-total {
-    height: 60px;
+    height: 65px;
     border: 1px solid #999;
-    position: fixed;
     background-color: grey;
-    left:12%;
+    padding: 10px 0;
 }
 
 #img-album {
@@ -45,5 +44,5 @@
 
 #bar-progress .left {
     position: relative;
-    width: 88%;
+    width: 85%;
 }
